@@ -1,4 +1,5 @@
 import { Table, Column, Model } from 'sequelize-typescript'
+import { DataType } from 'sequelize-typescript';
 import { IImageAttributes } from '../models/IImageAttributes'
 
 
@@ -17,7 +18,13 @@ export class ImageData extends Model<IImageAttributes>{
     @Column
     source!: string;
 
+    @Column({type: DataType.FLOAT})
+    size!: number;
+
     @Column
+    dimensions!: string;
+
+    @Column({type: DataType.TEXT})
     description!: string;
 
     @Column
