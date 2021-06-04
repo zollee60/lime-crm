@@ -22,6 +22,7 @@ router.get("/get/:id", async (req:express.Request, res:express.Response) => {
 
 router.post("/create", upload.single("image"), async (req:express.Request, res:express.Response) => {
     const imgData: IImageAttributes = req.body;
+    console.debug(imgData);
     const newImage: ImageData | undefined = await ImageService.createNewImageData(imgData, req.file);
     
     if(newImage){
