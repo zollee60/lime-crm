@@ -14,6 +14,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 export const ImageService = {
+    /**
+     * Service method which returns all image data from the databse
+     * @returns {Promise<Array<ImageData>>} - Promise which resolves into an array of ImageData objects
+     */
     getAll: async ():Promise<Array<ImageData>> => await (await ImageData.findAll()).sort((iPrev, iNext) => {
         const prevDate = new Date(iPrev.createdAt);
         const nextDate = new Date(iNext.createdAt);
@@ -22,8 +26,17 @@ export const ImageService = {
         return 0;
     }),
 
+    /** Service method which returns an ImageData object based on the primary key
+     * @param  {number} pk - Primary key of the image data 
+     */
     getByPk: async (pk:number):Promise<ImageData | null> => await ImageData.findByPk(pk),
 
+    /**
+     * Service method which handles the saving of images onto the server & the database
+     * @param  {IImageAttributes} imgData - Information about the image coming from the client
+     * @param  {Express.Multer.File} file - The image
+     * @returns {Promise<ImageData | undefined>} - Promise which resolves into an ImageData object, if the saving of file fails for some reason, than undefined is returned
+     */
     createNewImageData: async (imgData: IImageAttributes, file: Express.Multer.File):Promise<ImageData | undefined> => {
         const pipelineAsync = promisify(pipeline);
         if(file.detectedFileExtension === ".jpg" || file.detectedFileExtension === ".png"){
